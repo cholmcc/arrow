@@ -42,10 +42,10 @@ endif()
 # Try the parameterized roots, if they exist
 if ( _zlib_roots )
     find_path( ZLIB_INCLUDE_DIR NAMES zlib.h
-        PATHS ${_zlib_roots} NO_DEFAULT_PATH
+        HINTS ${_zlib_roots}
         PATH_SUFFIXES "include" )
     find_library( ZLIB_LIBRARIES NAMES libz.a zlib
-        PATHS ${_zlib_roots} NO_DEFAULT_PATH
+        HINTS ${_zlib_roots}
         PATH_SUFFIXES "lib" )
 else ()
     find_path( ZLIB_INCLUDE_DIR NAMES zlib.h )
