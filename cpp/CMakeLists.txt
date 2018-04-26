@@ -495,12 +495,14 @@ else()
   add_dependencies(benchmark all-benchmarks)
 endif()
 
-if(NOT ARROW_BUILD_EXAMPLES)
-  set(NO_EXAMPLES 1)
-endif()
-
 if (NOT ARROW_FUZZING)
   set(NO_FUZZING 1)
+endif()
+
+if(ARROW_HDFS OR ARROW_IPC)
+  set(ARROW_BOOST_HEADER_ONLY 0)
+else()
+  set(ARROW_BOOST_HEADER_ONLY 1)
 endif()
 
 if (ARROW_TENSORFLOW)
