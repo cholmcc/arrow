@@ -530,6 +530,7 @@ include_directories(SYSTEM ${DOUBLE_CONVERSION_INCLUDE_DIR})
 ADD_THIRDPARTY_LIB(double-conversion
   STATIC_LIB ${DOUBLE_CONVERSION_STATIC_LIB})
 
+
 message(STATUS "double-conversion include dir: ${DOUBLE_CONVERSION_INCLUDE_DIR}")
 message(STATUS "double-conversion static library: ${DOUBLE_CONVERSION_STATIC_LIB}")
 
@@ -565,7 +566,8 @@ if(ARROW_BUILD_TESTS OR
                           -DCMAKE_CXX_FLAGS=${GFLAGS_CMAKE_CXX_FLAGS})
 
     ExternalProject_Add(gflags_ep
-      URL ${GFLAGS_SOURCE_URL}
+      GIT_REPOSITORY "https://github.com/gflags/gflags"
+      GIT_TAG "v${GFLAGS_VERSION}"
       ${EP_LOG_OPTIONS}
       BUILD_IN_SOURCE 1
       BUILD_BYPRODUCTS "${GFLAGS_STATIC_LIB}"
@@ -619,7 +621,8 @@ if(ARROW_BUILD_TESTS OR ARROW_BUILD_BENCHMARKS)
     endif()
 
     ExternalProject_Add(googletest_ep
-      URL ${GTEST_SOURCE_URL}
+      GIT_REPOSITORY "https://github.com/google/googletest"
+      GIT_TAG ${GTEST_VERSION}
       BUILD_BYPRODUCTS ${GTEST_STATIC_LIB} ${GTEST_MAIN_STATIC_LIB}
       CMAKE_ARGS ${GTEST_CMAKE_ARGS}
       ${EP_LOG_OPTIONS})
@@ -670,7 +673,8 @@ if(ARROW_BUILD_BENCHMARKS)
     endif()
 
     ExternalProject_Add(gbenchmark_ep
-      URL ${GBENCHMARK_SOURCE_URL}
+      GIT_REPOSITORY "https://github.com/google/benchmark"
+      GIT_TAG "v${GBENCHMARK_VERSION}"
       BUILD_BYPRODUCTS "${GBENCHMARK_STATIC_LIB}"
       CMAKE_ARGS ${GBENCHMARK_CMAKE_ARGS}
       ${EP_LOG_OPTIONS})
@@ -695,8 +699,8 @@ if (ARROW_IPC)
   if("${RAPIDJSON_HOME}" STREQUAL "")
     ExternalProject_Add(rapidjson_ep
       PREFIX "${CMAKE_BINARY_DIR}"
-      URL ${RAPIDJSON_SOURCE_URL}
-      URL_MD5 ${RAPIDJSON_SOURCE_MD5}
+      GIT_REPOSITORY "https://github.com/miloyip/rapidjson"
+      GIT_TAG "v1.1.0"
       CONFIGURE_COMMAND ""
       BUILD_COMMAND ""
       BUILD_IN_SOURCE 1
@@ -724,7 +728,8 @@ if (ARROW_IPC)
     endif()
     # We always need to do release builds, otherwise flatc will not be installed.
     ExternalProject_Add(flatbuffers_ep
-      URL ${FLATBUFFERS_SOURCE_URL}
+      GIT_REPOSITORY "https://github.com/google/flatbuffers"
+      GIT_TAG "v${FLATBUFFERS_VERSION}"
       CMAKE_ARGS
       "-DCMAKE_CXX_FLAGS=${FLATBUFFERS_CMAKE_CXX_FLAGS}"
       "-DCMAKE_INSTALL_PREFIX:PATH=${FLATBUFFERS_PREFIX}"
@@ -918,7 +923,8 @@ if (ARROW_WITH_SNAPPY)
         BUILD_IN_SOURCE 1
         BUILD_COMMAND ${MAKE}
         INSTALL_DIR ${SNAPPY_PREFIX}
-        URL ${SNAPPY_SOURCE_URL}
+        GIT_REPOSITORY "https://github.com/google/snappy"
+        GIT_TAG "${SNAPPY_VERSION}"
         CMAKE_ARGS ${SNAPPY_CMAKE_ARGS}
         BUILD_BYPRODUCTS "${SNAPPY_STATIC_LIB}")
     else()
@@ -928,7 +934,8 @@ if (ARROW_WITH_SNAPPY)
         BUILD_IN_SOURCE 1
         BUILD_COMMAND ${MAKE}
         INSTALL_DIR ${SNAPPY_PREFIX}
-        URL ${SNAPPY_SOURCE_URL}
+        GIT_REPOSITORY "https://github.com/google/snappy"
+        GIT_TAG "${SNAPPY_VERSION}"
         BUILD_BYPRODUCTS "${SNAPPY_STATIC_LIB}")
     endif()
     set(SNAPPY_VENDORED 1)
@@ -972,7 +979,8 @@ if (ARROW_WITH_BROTLI)
                           -DBUILD_SHARED_LIBS=OFF)
 
     ExternalProject_Add(brotli_ep
-      URL ${BROTLI_SOURCE_URL}
+      GIT_REPOSITORY "https://github.com/google/brotli"
+      GIT_TAG "${BROTLI_VERSION}"
       BUILD_BYPRODUCTS "${BROTLI_STATIC_LIBRARY_ENC}" "${BROTLI_STATIC_LIBRARY_DEC}" "${BROTLI_STATIC_LIBRARY_COMMON}"
       ${BROTLI_BUILD_BYPRODUCTS}
       ${EP_LOG_OPTIONS}
@@ -1049,7 +1057,8 @@ if (ARROW_WITH_LZ4)
     endif()
 
     ExternalProject_Add(lz4_ep
-        URL ${LZ4_SOURCE_URL}
+        GIT_REPOSITORY "https://github.com/lz4/lz4"
+        GIT_TAG "v${LZ4_VERSION}"
         ${EP_LOG_OPTIONS}
         UPDATE_COMMAND ""
         ${LZ4_PATCH_COMMAND}
@@ -1116,6 +1125,8 @@ at least CMake 3.7")
       CMAKE_ARGS ${ZSTD_CMAKE_ARGS}
       SOURCE_SUBDIR "build/cmake"
       INSTALL_DIR ${ZSTD_PREFIX}
+      GIT_REPOSITORY "https://github.com/facebook/zstd"
+      GIT_TAG "v${ZSTD_VERSION}"
       URL ${ZSTD_SOURCE_URL}
       BUILD_BYPRODUCTS "${ZSTD_STATIC_LIB}")
 
@@ -1191,7 +1202,8 @@ if (ARROW_ORC OR ARROW_FLIGHT OR ARROW_GANDIVA)
     ExternalProject_Add(protobuf_ep
       CONFIGURE_COMMAND "./configure" "--disable-shared" "--prefix=${PROTOBUF_PREFIX}" "CXXFLAGS=${EP_CXX_FLAGS}"
       BUILD_IN_SOURCE 1
-      URL ${PROTOBUF_SOURCE_URL}
+      GIT_REPOSITORY "https://github.com/google/protobuf"
+      GIT_TAG "v${PROTOBUF_VERSION}"
       BUILD_BYPRODUCTS "${PROTOBUF_STATIC_LIB}" "${PROTOBUF_EXECUTABLE}"
       ${EP_LOG_OPTIONS})
 
@@ -1310,7 +1322,8 @@ if (ARROW_ORC)
                         -DZLIB_HOME=${ZLIB_HOME})
 
     ExternalProject_Add(orc_ep
-      URL ${ORC_SOURCE_URL}
+      GIT_REPOSITORY "https://github.com/apache/orc"
+      GIT_TAG "${ORC_VERSION}"
       BUILD_BYPRODUCTS ${ORC_STATIC_LIB}
       CMAKE_ARGS ${ORC_CMAKE_ARGS}
       ${EP_LOG_OPTIONS})
