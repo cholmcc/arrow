@@ -300,7 +300,8 @@ if(ARROW_BUILD_TESTS OR ARROW_BUILD_BENCHMARKS)
     endif()
 
     ExternalProject_Add(googletest_ep
-      URL "https://github.com/google/googletest/archive/release-${GTEST_VERSION}.tar.gz"
+      GIT_REPOSITORY "https://github.com/google/googletest"
+      GIT_TAG "release-${GTEST_VERSION}"
       BUILD_BYPRODUCTS ${GTEST_STATIC_LIB} ${GTEST_MAIN_STATIC_LIB}
       CMAKE_ARGS ${GTEST_CMAKE_ARGS}
       ${EP_LOG_OPTIONS})
@@ -326,7 +327,6 @@ if(ARROW_BUILD_TESTS OR ARROW_BUILD_BENCHMARKS)
   if("${GFLAGS_HOME}" STREQUAL "")
     set(GFLAGS_CMAKE_CXX_FLAGS ${EP_CXX_FLAGS})
 
-    set(GFLAGS_URL "https://github.com/gflags/gflags/archive/v${GFLAGS_VERSION}.tar.gz")
     set(GFLAGS_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/gflags_ep-prefix/src/gflags_ep")
     set(GFLAGS_HOME "${GFLAGS_PREFIX}")
     set(GFLAGS_INCLUDE_DIR "${GFLAGS_PREFIX}/include")
@@ -349,7 +349,8 @@ if(ARROW_BUILD_TESTS OR ARROW_BUILD_BENCHMARKS)
                           -DCMAKE_CXX_FLAGS=${GFLAGS_CMAKE_CXX_FLAGS})
 
     ExternalProject_Add(gflags_ep
-      URL ${GFLAGS_URL}
+      GIT_REPOSITORY "https://github.com/gflags/gflags"
+      GIT_TAG "v${GFLAGS_VERSION}"
       ${EP_LOG_OPTIONS}
       BUILD_IN_SOURCE 1
       BUILD_BYPRODUCTS "${GFLAGS_STATIC_LIB}"
@@ -399,7 +400,8 @@ if(ARROW_BUILD_BENCHMARKS)
     endif()
 
     ExternalProject_Add(gbenchmark_ep
-      URL "https://github.com/google/benchmark/archive/v${GBENCHMARK_VERSION}.tar.gz"
+      GIT_REPOSITORY "https://github.com/google/benchmark"
+      GIT_TAG "v${GBENCHMARK_VERSION}"
       BUILD_BYPRODUCTS "${GBENCHMARK_STATIC_LIB}"
       CMAKE_ARGS ${GBENCHMARK_CMAKE_ARGS}
       ${EP_LOG_OPTIONS})
@@ -424,8 +426,8 @@ if (ARROW_IPC)
   if("${RAPIDJSON_HOME}" STREQUAL "")
     ExternalProject_Add(rapidjson_ep
       PREFIX "${CMAKE_BINARY_DIR}"
-      URL "https://github.com/miloyip/rapidjson/archive/v1.1.0.tar.gz"
-      URL_MD5 "badd12c511e081fec6c89c43a7027bce"
+      GIT_REPOSITORY "https://github.com/miloyip/rapidjson"
+      GIT_TAG "v1.1.0"
       CONFIGURE_COMMAND ""
       BUILD_COMMAND ""
       BUILD_IN_SOURCE 1
@@ -455,7 +457,8 @@ if (ARROW_IPC)
       set(FLATBUFFERS_CMAKE_CXX_FLAGS -fPIC)
     endif()
     ExternalProject_Add(flatbuffers_ep
-      URL "https://github.com/google/flatbuffers/archive/v${FLATBUFFERS_VERSION}.tar.gz"
+      GIT_REPOSITORY "https://github.com/google/flatbuffers"
+      GIT_TAG "v${FLATBUFFERS_VERSION}"
       CMAKE_ARGS
       "-DCMAKE_CXX_FLAGS=${FLATBUFFERS_CMAKE_CXX_FLAGS}"
       "-DCMAKE_INSTALL_PREFIX:PATH=${FLATBUFFERS_PREFIX}"
@@ -650,7 +653,8 @@ if (ARROW_WITH_SNAPPY)
         BUILD_IN_SOURCE 1
         BUILD_COMMAND ${MAKE}
         INSTALL_DIR ${SNAPPY_PREFIX}
-        URL ${SNAPPY_SRC_URL}
+        GIT_REPOSITORY "https://github.com/google/snappy"
+        GIT_TAG "${SNAPPY_VERSION}"
         CMAKE_ARGS ${SNAPPY_CMAKE_ARGS}
         BUILD_BYPRODUCTS "${SNAPPY_STATIC_LIB}")
     else()
@@ -660,7 +664,8 @@ if (ARROW_WITH_SNAPPY)
         BUILD_IN_SOURCE 1
         BUILD_COMMAND ${MAKE}
         INSTALL_DIR ${SNAPPY_PREFIX}
-        URL ${SNAPPY_SRC_URL}
+        GIT_REPOSITORY "https://github.com/google/snappy"
+        GIT_TAG "${SNAPPY_VERSION}"
         BUILD_BYPRODUCTS "${SNAPPY_STATIC_LIB}")
     endif()
     set(SNAPPY_VENDORED 1)
@@ -704,7 +709,8 @@ if (ARROW_WITH_BROTLI)
                           -DBUILD_SHARED_LIBS=OFF)
 
     ExternalProject_Add(brotli_ep
-      URL "https://github.com/google/brotli/archive/${BROTLI_VERSION}.tar.gz"
+      GIT_REPOSITORY "https://github.com/google/brotli"
+      GIT_TAG "${BROTLI_VERSION}"
       BUILD_BYPRODUCTS "${BROTLI_STATIC_LIBRARY_ENC}" "${BROTLI_STATIC_LIBRARY_DEC}" "${BROTLI_STATIC_LIBRARY_COMMON}"
       ${BROTLI_BUILD_BYPRODUCTS}
       ${EP_LOG_OPTIONS}
@@ -766,7 +772,8 @@ if (ARROW_WITH_LZ4)
     endif()
 
     ExternalProject_Add(lz4_ep
-        URL "https://github.com/lz4/lz4/archive/v${LZ4_VERSION}.tar.gz"
+        GIT_REPOSITORY "https://github.com/lz4/lz4"
+        GIT_TAG "v${LZ4_VERSION}"
         ${EP_LOG_OPTIONS}
         UPDATE_COMMAND ""
         ${LZ4_PATCH_COMMAND}
@@ -819,7 +826,8 @@ if (ARROW_WITH_ZSTD)
     endif()
 
     ExternalProject_Add(zstd_ep
-        URL "https://github.com/facebook/zstd/archive/v${ZSTD_VERSION}.tar.gz"
+        GIT_REPOSITORY "https://github.com/facebook/zstd"
+        GIT_TAG "v${ZSTD_VERSION}"
         ${EP_LOG_OPTIONS}
         UPDATE_COMMAND ""
         ${ZSTD_PATCH_COMMAND}
@@ -899,12 +907,12 @@ if (ARROW_ORC)
     set (PROTOBUF_HOME "${PROTOBUF_PREFIX}")
     set (PROTOBUF_INCLUDE_DIR "${PROTOBUF_PREFIX}/include")
     set (PROTOBUF_STATIC_LIB "${PROTOBUF_PREFIX}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}protobuf${CMAKE_STATIC_LIBRARY_SUFFIX}")
-    set (PROTOBUF_SRC_URL "https://github.com/google/protobuf/releases/download/v${PROTOBUF_VERSION}/protobuf-${PROTOBUF_VERSION}.tar.gz")
 
     ExternalProject_Add(protobuf_ep
       CONFIGURE_COMMAND "./configure" "--disable-shared" "--prefix=${PROTOBUF_PREFIX}" "CXXFLAGS=${EP_CXX_FLAGS}"
       BUILD_IN_SOURCE 1
-      URL ${PROTOBUF_SRC_URL}
+      GIT_REPOSITORY "https://github.com/google/protobuf"
+      GIT_TAG "v${PROTOBUF_VERSION}"
       BUILD_BYPRODUCTS "${PROTOBUF_STATIC_LIB}"
       ${EP_LOG_OPTIONS})
 
@@ -955,7 +963,8 @@ if (ARROW_ORC)
                       -DZLIB_HOME=${ZLIB_HOME})
 
   ExternalProject_Add(orc_ep
-    URL "https://github.com/apache/orc/archive/${ORC_VERSION}.tar.gz"
+    GIT_REPOSITORY "https://github.com/apache/orc"
+    GIT_TAG "${ORC_VERSION}"
     BUILD_BYPRODUCTS ${ORC_STATIC_LIB}
     CMAKE_ARGS ${ORC_CMAKE_ARGS}
     ${EP_LOG_OPTIONS})
