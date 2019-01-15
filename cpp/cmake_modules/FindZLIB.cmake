@@ -49,11 +49,11 @@ endif ()
 # Try the parameterized roots, if they exist
 if (_zlib_roots)
   find_path(ZLIB_INCLUDE_DIR NAMES zlib.h
-    PATHS ${_zlib_roots} NO_DEFAULT_PATH
+    HINTS ${_zlib_roots} NO_DEFAULT_PATH
     PATH_SUFFIXES "include")
   find_library(ZLIB_SHARED_LIB
     NAMES ${ZLIB_LIB_NAME}
-    PATHS ${_zlib_roots} NO_DEFAULT_PATH
+    HINTS ${_zlib_roots} NO_DEFAULT_PATH
     PATH_SUFFIXES "lib")
 else ()
   pkg_check_modules(PKG_ZLIB zlib)
