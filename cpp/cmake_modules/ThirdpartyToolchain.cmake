@@ -1059,7 +1059,7 @@ if (ARROW_WITH_LZ4)
 
     ExternalProject_Add(lz4_ep
         GIT_REPOSITORY "https://github.com/lz4/lz4"
-        GIT_TAG "v${LZ4_VERSION}"
+        GIT_TAG "${LZ4_VERSION}"
         ${EP_LOG_OPTIONS}
         UPDATE_COMMAND ""
         ${LZ4_PATCH_COMMAND}
