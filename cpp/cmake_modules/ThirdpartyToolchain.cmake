@@ -1449,7 +1449,8 @@ if (NOT THRIFT_FOUND)
   endif()
 
   ExternalProject_Add(thrift_ep
-    URL ${THRIFT_SOURCE_URL}
+    GIT_REPOSITORY "https://github.com/apache/thrift"
+    GIT_TAG "${THRIFT_VERSION}"
     BUILD_BYPRODUCTS "${THRIFT_STATIC_LIB}" "${THRIFT_COMPILER}"
     CMAKE_ARGS ${THRIFT_CMAKE_ARGS}
     DEPENDS ${THRIFT_DEPENDENCIES}
