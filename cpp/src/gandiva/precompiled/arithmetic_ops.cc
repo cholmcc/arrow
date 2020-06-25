@@ -18,6 +18,7 @@
 extern "C" {
 
 #include <math.h>
+
 #include "./types.h"
 
 // Expand inner macro for all numeric types.
@@ -113,6 +114,8 @@ NUMERIC_DATE_TYPES(BINARY_RELATIONAL, greater_than_or_equal_to, >=)
 
 CAST_UNARY(castBIGINT, int32, int64)
 CAST_UNARY(castINT, int64, int32)
+CAST_UNARY(castINT, int8, int32)
+CAST_UNARY(castFLOAT4, int8, float32)
 CAST_UNARY(castFLOAT4, int32, float32)
 CAST_UNARY(castFLOAT4, int64, float32)
 CAST_UNARY(castFLOAT8, int32, float64)

@@ -24,6 +24,7 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "./types.h"
 
 // Expand the inner fn for types that support extended math.
@@ -35,34 +36,79 @@ extern "C" {
   INNER(float32, OUT_TYPE)                    \
   INNER(float64, OUT_TYPE)
 
+#define ENUMERIC_TYPES_UNARY_FLOAT(INNER, OUT_TYPE) \
+  INNER(int32, OUT_TYPE)                            \
+  INNER(uint32, OUT_TYPE)                           \
+  INNER(int64, OUT_TYPE)                            \
+  INNER(uint64, OUT_TYPE)                           \
+  INNER(float32, OUT_TYPE)
+
+// Square root
+#define SQRTF(IN_TYPE, OUT_TYPE)                                    \
+  FORCE_INLINE                                                      \
+  gdv_##OUT_TYPE sqrtf_##IN_TYPE(gdv_##IN_TYPE in) {                \
+    return static_cast<gdv_float32>(sqrtf(static_cast<float>(in))); \
+  }
+#define SQRT(IN_TYPE, OUT_TYPE)                                           \
+  FORCE_INLINE                                                            \
+  gdv_##OUT_TYPE sqrt_##IN_TYPE(gdv_##IN_TYPE in) {                       \
+    return static_cast<gdv_float64>(sqrtl(static_cast<long double>(in))); \
+  }
+
+ENUMERIC_TYPES_UNARY_FLOAT(SQRTF, float32)
+ENUMERIC_TYPES_UNARY(SQRT, float64)
+
 // Cubic root
+#define CBRTF(IN_TYPE, OUT_TYPE)                                    \
+  FORCE_INLINE                                                      \
+  gdv_##OUT_TYPE cbrtf_##IN_TYPE(gdv_##IN_TYPE in) {                \
+    return static_cast<gdv_float32>(cbrtf(static_cast<float>(in))); \
+  }
 #define CBRT(IN_TYPE, OUT_TYPE)                                           \
   FORCE_INLINE                                                            \
   gdv_##OUT_TYPE cbrt_##IN_TYPE(gdv_##IN_TYPE in) {                       \
     return static_cast<gdv_float64>(cbrtl(static_cast<long double>(in))); \
   }
 
+ENUMERIC_TYPES_UNARY_FLOAT(CBRTF, float32)
 ENUMERIC_TYPES_UNARY(CBRT, float64)
 
 // Exponent
+#define EXPF(IN_TYPE, OUT_TYPE)                                    \
+  FORCE_INLINE                                                     \
+  gdv_##OUT_TYPE expf_##IN_TYPE(gdv_##IN_TYPE in) {                \
+    return static_cast<gdv_float32>(expf(static_cast<float>(in))); \
+  }
 #define EXP(IN_TYPE, OUT_TYPE)                                           \
   FORCE_INLINE                                                           \
   gdv_##OUT_TYPE exp_##IN_TYPE(gdv_##IN_TYPE in) {                       \
     return static_cast<gdv_float64>(expl(static_cast<long double>(in))); \
   }
 
+ENUMERIC_TYPES_UNARY_FLOAT(EXPF, float32)
 ENUMERIC_TYPES_UNARY(EXP, float64)
 
 // log
+#define LOGF(IN_TYPE, OUT_TYPE)                                    \
+  FORCE_INLINE                                                     \
+  gdv_##OUT_TYPE logf_##IN_TYPE(gdv_##IN_TYPE in) {                \
+    return static_cast<gdv_float32>(logf(static_cast<float>(in))); \
+  }
 #define LOG(IN_TYPE, OUT_TYPE)                                           \
   FORCE_INLINE                                                           \
   gdv_##OUT_TYPE log_##IN_TYPE(gdv_##IN_TYPE in) {                       \
     return static_cast<gdv_float64>(logl(static_cast<long double>(in))); \
   }
 
+ENUMERIC_TYPES_UNARY_FLOAT(LOGF, float32)
 ENUMERIC_TYPES_UNARY(LOG, float64)
 
 // log base 10
+#define LOG10F(IN_TYPE, OUT_TYPE)                                    \
+  FORCE_INLINE                                                       \
+  gdv_##OUT_TYPE log10f_##IN_TYPE(gdv_##IN_TYPE in) {                \
+    return static_cast<gdv_float32>(log10f(static_cast<float>(in))); \
+  }
 #define LOG10(IN_TYPE, OUT_TYPE)                                           \
   FORCE_INLINE                                                             \
   gdv_##OUT_TYPE log10_##IN_TYPE(gdv_##IN_TYPE in) {                       \
@@ -71,6 +117,7 @@ ENUMERIC_TYPES_UNARY(LOG, float64)
 
 #define LOGL(VALUE) static_cast<gdv_float64>(logl(static_cast<long double>(VALUE)))
 
+ENUMERIC_TYPES_UNARY_FLOAT(LOG10F, float32)
 ENUMERIC_TYPES_UNARY(LOG10, float64)
 
 FORCE_INLINE
@@ -104,13 +151,33 @@ LOG_WITH_BASE(float32, float32, float64)
 LOG_WITH_BASE(float64, float64, float64)
 
 // power
+#define POWERF(IN_TYPE1, IN_TYPE2, OUT_TYPE)                          \
+  FORCE_INLINE                                                        \
+  gdv_##OUT_TYPE powerf_##IN_TYPE1##_##IN_TYPE2(gdv_##IN_TYPE1 in1,   \
+                                                gdv_##IN_TYPE2 in2) { \
+    return static_cast<gdv_float32>(powf(in1, in2));                  \
+  }
 #define POWER(IN_TYPE1, IN_TYPE2, OUT_TYPE)                                              \
   FORCE_INLINE                                                                           \
   gdv_##OUT_TYPE power_##IN_TYPE1##_##IN_TYPE2(gdv_##IN_TYPE1 in1, gdv_##IN_TYPE2 in2) { \
     return static_cast<gdv_float64>(powl(in1, in2));                                     \
   }
 
+POWERF(float32, float32, float32)
 POWER(float64, float64, float64)
+
+// ABS
+#define ABSF(IN_TYPE, OUT_TYPE)                     \
+  FORCE_INLINE                                      \
+  gdv_##OUT_TYPE absf_##IN_TYPE(gdv_##IN_TYPE in) { \
+    if (static_cast<gdv_##IN_TYPE>(in) < 0) {       \
+      return static_cast<gdv_##OUT_TYPE>(-in);      \
+    } else {                                        \
+      return static_cast<gdv_##OUT_TYPE>(in);       \
+    }                                               \
+  }
+
+ABSF(float32, float32)
 
 FORCE_INLINE
 gdv_int32 round_int32(gdv_int32 num) { return num; }

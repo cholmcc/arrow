@@ -16,6 +16,7 @@
 // under the License.
 
 #include "gandiva/function_registry_math_ops.h"
+
 #include "gandiva/function_registry_common.h"
 
 namespace gandiva {
@@ -27,6 +28,11 @@ namespace gandiva {
       UNARY_SAFE_NULL_IF_NULL(name, ALIASES, uint64, float64),  \
       UNARY_SAFE_NULL_IF_NULL(name, ALIASES, float32, float64), \
       UNARY_SAFE_NULL_IF_NULL(name, ALIASES, float64, float64)
+
+#define MATH_UNARY_OPS_FLOAT(name, ALIASES)                    \
+  UNARY_SAFE_NULL_IF_NULL(name, ALIASES, int32, float32),      \
+      UNARY_SAFE_NULL_IF_NULL(name, ALIASES, uint32, float32), \
+      UNARY_SAFE_NULL_IF_NULL(name, ALIASES, float32, float32)
 
 #define MATH_BINARY_UNSAFE(name, ALIASES)                          \
   BINARY_UNSAFE_NULL_IF_NULL(name, ALIASES, int32, float64),       \
@@ -45,11 +51,16 @@ namespace gandiva {
 std::vector<NativeFunction> GetMathOpsFunctionRegistry() {
   static std::vector<NativeFunction> math_fn_registry_ = {
       MATH_UNARY_OPS(cbrt, {}), MATH_UNARY_OPS(exp, {}), MATH_UNARY_OPS(log, {}),
-      MATH_UNARY_OPS(log10, {}),
+      MATH_UNARY_OPS(log10, {}), MATH_UNARY_OPS(sqrt, {}),
+
+      MATH_UNARY_OPS_FLOAT(sqrtf, {}), MATH_UNARY_OPS_FLOAT(cbrtf, {}),
+      MATH_UNARY_OPS_FLOAT(expf, {}), MATH_UNARY_OPS_FLOAT(logf, {}),
+      MATH_UNARY_OPS_FLOAT(log10f, {}),
 
       MATH_BINARY_UNSAFE(log, {}),
 
       BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(power, {"pow"}, float64),
+      BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(powerf, {"powf"}, float32),
 
       UNARY_SAFE_NULL_NEVER_BOOL_FN(isnull, {}),
       UNARY_SAFE_NULL_NEVER_BOOL_FN(isnotnull, {}),
@@ -61,6 +72,7 @@ std::vector<NativeFunction> GetMathOpsFunctionRegistry() {
 
       // decimal functions
       UNARY_SAFE_NULL_IF_NULL(abs, {}, decimal128, decimal128),
+      UNARY_SAFE_NULL_IF_NULL(absf, {}, float32, float32),
       UNARY_SAFE_NULL_IF_NULL(ceil, {}, decimal128, decimal128),
       UNARY_SAFE_NULL_IF_NULL(floor, {}, decimal128, decimal128),
       UNARY_SAFE_NULL_IF_NULL(round, {}, decimal128, decimal128),
@@ -81,6 +93,8 @@ std::vector<NativeFunction> GetMathOpsFunctionRegistry() {
 }
 
 #undef MATH_UNARY_OPS
+
+#undef MATH_UNARY_OPS_FLOAT
 
 #undef MATH_BINARY_UNSAFE
 
