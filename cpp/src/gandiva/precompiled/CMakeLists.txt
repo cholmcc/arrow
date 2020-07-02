@@ -23,6 +23,7 @@ set(PRECOMPILED_SRCS
     decimal_ops.cc
     decimal_wrapper.cc
     extended_math_ops.cc
+    extended_math_ops_trig.cc
     hash.cc
     print.cc
     string_ops.cc
@@ -120,6 +121,8 @@ if(ARROW_BUILD_TESTS)
                  arithmetic_ops.cc
                  extended_math_ops_test.cc
                  extended_math_ops.cc
+                 extended_math_ops_trig_test.cc
+                 extended_math_ops_trig.cc
                  decimal_ops_test.cc
                  decimal_ops.cc
                  ../decimal_type_util.cc

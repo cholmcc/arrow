@@ -15,18 +15,23 @@
 // specific language governing permissions and limitations
 // under the License.
 
+#include <gandiva/precompiled/testing.h>
+#include <gtest/gtest.h>
 #include <math.h>
 
-#include <gtest/gtest.h>
 #include "gandiva/execution_context.h"
 #include "gandiva/precompiled/types.h"
 
 namespace gandiva {
 
-static const double MAX_ERROR = 0.00005;
+TEST(TestExtendedMathOps, TestSqrt) {
+  VerifyFuzzyEquals(sqrt_int32(9), 3);
+  VerifyFuzzyEquals(sqrt_int64(9), 3);
+  VerifyFuzzyEquals(sqrt_float32(9), 3);
+  VerifyFuzzyEquals(sqrt_float64(9), 3);
 
-void VerifyFuzzyEquals(double actual, double expected, double max_error = MAX_ERROR) {
-  EXPECT_TRUE(fabs(actual - expected) < max_error) << actual << " != " << expected;
+  VerifyFuzzyEquals(sqrt_float32(6.25), 2.5);
+  VerifyFuzzyEquals(sqrt_float64(6.25), 2.5);
 }
 
 TEST(TestExtendedMathOps, TestCbrt) {
