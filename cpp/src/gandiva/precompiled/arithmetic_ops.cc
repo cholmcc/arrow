@@ -18,6 +18,7 @@
 extern "C" {
 
 #include <math.h>
+
 #include "./types.h"
 
 // Expand inner macro for all numeric types.

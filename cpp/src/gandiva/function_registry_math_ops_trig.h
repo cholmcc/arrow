@@ -17,29 +17,12 @@
 
 #pragma once
 
-#include <gtest/gtest.h>
+#include <vector>
 
-#include <ctime>
-
-#include "arrow/util/logging.h"
-#include "gandiva/date_utils.h"
-#include "gandiva/precompiled/types.h"
+#include "gandiva/native_function.h"
 
 namespace gandiva {
 
-static inline gdv_timestamp StringToTimestamp(const char* buf) {
-  int64_t out = 0;
-  bool success = internal::ParseTimestamp(buf, "%Y-%m-%d %H:%M:%S", false, &out);
-  DCHECK(success);
-  ARROW_UNUSED(success);
-  return out * 1000;
-}
-
-static const double MAX_ERROR = 0.00005;
-
-void inline VerifyFuzzyEquals(double actual, double expected,
-                              double max_error = MAX_ERROR) {
-  EXPECT_TRUE(fabs(actual - expected) < max_error) << actual << " != " << expected;
-}
+std::vector<NativeFunction> GetMathOpsTrigFunctionRegistry();
 
 }  // namespace gandiva
