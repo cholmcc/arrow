@@ -24,7 +24,6 @@
 
 #include "arrow/util/logging.h"
 #include "arrow/util/value_parsing.h"
-#include "arrow/util/logging.h"
 #include "gandiva/date_utils.h"
 #include "gandiva/precompiled/types.h"
 
