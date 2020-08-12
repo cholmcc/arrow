@@ -17,7 +17,7 @@
 
 #include <gandiva/precompiled/testing.h>
 #include <gtest/gtest.h>
-#include <math.h>
+#include <cmath>
 
 #include "gandiva/execution_context.h"
 #include "gandiva/precompiled/types.h"
