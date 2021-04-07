@@ -68,6 +68,7 @@ extern "C" {
 NUMERIC_TYPES(BINARY_SYMMETRIC, add, +)
 NUMERIC_TYPES(BINARY_SYMMETRIC, subtract, -)
 NUMERIC_TYPES(BINARY_SYMMETRIC, multiply, *)
+
 BINARY_SYMMETRIC(bitwise_and, int32, &)
 BINARY_SYMMETRIC(bitwise_and, int64, &)
 BINARY_SYMMETRIC(bitwise_or, int32, |)
@@ -75,6 +76,19 @@ BINARY_SYMMETRIC(bitwise_or, int64, |)
 BINARY_SYMMETRIC(bitwise_xor, int32, ^)
 BINARY_SYMMETRIC(bitwise_xor, int64, ^)
 
+BINARY_SYMMETRIC(bitwise_and, uint32, &)
+BINARY_SYMMETRIC(bitwise_and, uint64, &)
+BINARY_SYMMETRIC(bitwise_or, uint32, |)
+BINARY_SYMMETRIC(bitwise_or, uint64, |)
+BINARY_SYMMETRIC(bitwise_xor, uint32, ^)
+BINARY_SYMMETRIC(bitwise_xor, uint64, ^)
+
+BINARY_SYMMETRIC(bitwise_and, uint8, &)
+BINARY_SYMMETRIC(bitwise_and, uint16, &)
+BINARY_SYMMETRIC(bitwise_or, uint8, |)
+BINARY_SYMMETRIC(bitwise_or, uint16, |)
+BINARY_SYMMETRIC(bitwise_xor, uint8, ^)
+BINARY_SYMMETRIC(bitwise_xor, uint16, ^)
 #undef BINARY_SYMMETRIC
 
 MOD_OP(mod, int64, int32, int32)
