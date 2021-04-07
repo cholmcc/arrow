@@ -86,12 +86,14 @@ std::vector<NativeFunction> GetArithmeticFunctionRegistry() {
       BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_or, {}, int64),
       BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_xor, {}, int32),
       BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_xor, {}, int64),
+
       BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_and, {}, uint32),
       BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_and, {}, uint64),
       BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_or, {}, uint32),
       BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_or, {}, uint64),
-      BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_xor, {}, uint8),
-      BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_xor, {}, uint16),
+      BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_xor, {}, uint32),
+      BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_xor, {}, uint64),
+
       BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_and, {}, uint8),
       BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_and, {}, uint16),
       BINARY_SYMMETRIC_SAFE_NULL_IF_NULL(bitwise_or, {}, uint8),
