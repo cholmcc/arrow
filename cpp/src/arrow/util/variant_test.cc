@@ -17,14 +17,14 @@
 
 #include "arrow/util/variant.h"
 
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
 #include <functional>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
-
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
 
 #include "arrow/testing/gtest_compat.h"
 
