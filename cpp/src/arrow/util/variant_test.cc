@@ -17,14 +17,14 @@
 
 #include "arrow/util/variant.h"
 
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
 #include <functional>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
-
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
 
 #include "arrow/testing/gtest_compat.h"
 
@@ -247,8 +247,8 @@ struct AssertVisitOne {
   void operator()() {
     V v{member_};
     expected_ = &get<T>(v);
-    visit(*this, v);
-    visit(*this, &v);
+    arrow::util::visit(*this, v);
+    arrow::util::visit(*this, &v);
   }
 
   T member_;
@@ -279,10 +279,10 @@ TEST(VariantTest, Visit) {
   } Double;
 
   v = 7;
-  EXPECT_EQ(visit(Double, v), int_or_string{14});
+  EXPECT_EQ(arrow::util::visit(Double, v), int_or_string{14});
 
   v = "lolol";
-  EXPECT_EQ(visit(Double, v), int_or_string{"lolollolol"});
+  EXPECT_EQ(arrow::util::visit(Double, v), int_or_string{"lolollolol"});
 
   // mutating visit:
   struct {
@@ -291,11 +291,11 @@ TEST(VariantTest, Visit) {
   } DoubleInplace;
 
   v = 7;
-  visit(DoubleInplace, &v);
+  arrow::util::visit(DoubleInplace, &v);
   EXPECT_EQ(v, int_or_string{14});
 
   v = "lolol";
-  visit(DoubleInplace, &v);
+  arrow::util::visit(DoubleInplace, &v);
   EXPECT_EQ(v, int_or_string{"lolollolol"});
 }
 
