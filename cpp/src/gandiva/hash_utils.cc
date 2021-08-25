@@ -20,6 +20,7 @@
 #include "arrow/util/logging.h"
 #include "gandiva/gdv_function_stubs.h"
 #include "openssl/evp.h"
+#include "openssl/opensslv.h"
 
 namespace gandiva {
 /// Hashes a generic message using the SHA256 algorithm
@@ -49,7 +50,11 @@ GANDIVA_EXPORT
 const char* gdv_hash_using_sha(int64_t context, const void* message,
                                size_t message_length, const EVP_MD* hash_type,
                                uint32_t result_buf_size, int32_t* out_length) {
+#if OPENSSL_VERSION_NUMBER >= 0x1010000fL
   EVP_MD_CTX* md_ctx = EVP_MD_CTX_new();
+#else
+  EVP_MD_CTX* md_ctx = EVP_MD_CTX_create();
+#endif
 
   if (md_ctx == nullptr) {
     gdv_fn_context_set_error_msg(context,
@@ -64,8 +69,11 @@ const char* gdv_hash_using_sha(int64_t context, const void* message,
       EVP_DigestUpdate(md_ctx, message, message_length) != evp_success_status) {
     gdv_fn_context_set_error_msg(context,
                                  "Could not obtain the hash for the defined value.");
+#if OPENSSL_VERSION_NUMBER >= 0x1010000fL
     EVP_MD_CTX_free(md_ctx);
-
+#else
+    EVP_MD_CTX_destroy(md_ctx);
+#endif
     *out_length = 0;
     return "";
   }
@@ -76,7 +84,11 @@ const char* gdv_hash_using_sha(int64_t context, const void* message,
 
   if (result == nullptr) {
     gdv_fn_context_set_error_msg(context, "Could not allocate memory for SHA processing");
+#if OPENSSL_VERSION_NUMBER >= 0x1010000fL
     EVP_MD_CTX_free(md_ctx);
+#else
+    EVP_MD_CTX_destroy(md_ctx);
+#endif
     *out_length = 0;
     return "";
   }
@@ -87,7 +99,11 @@ const char* gdv_hash_using_sha(int64_t context, const void* message,
   if (result_length != hash_digest_size && result_buf_size != (2 * hash_digest_size)) {
     gdv_fn_context_set_error_msg(context,
                                  "Could not obtain the hash for the defined value");
+#if OPENSSL_VERSION_NUMBER >= 0x1010000fL
     EVP_MD_CTX_free(md_ctx);
+#else
+    EVP_MD_CTX_destroy(md_ctx);
+#endif
     OPENSSL_free(result);
 
     *out_length = 0;
@@ -101,7 +117,11 @@ const char* gdv_hash_using_sha(int64_t context, const void* message,
     gdv_fn_context_set_error_msg(context,
                                  "Could not allocate memory for the result buffer");
     // Free the resources used by the EVP
+#if OPENSSL_VERSION_NUMBER >= 0x1010000fL
     EVP_MD_CTX_free(md_ctx);
+#else
+    EVP_MD_CTX_destroy(md_ctx);
+#endif
     OPENSSL_free(result);
 
     *out_length = 0;
@@ -118,7 +138,11 @@ const char* gdv_hash_using_sha(int64_t context, const void* message,
   }
 
   // Free the resources used by the EVP to avoid memory leaks
+#if OPENSSL_VERSION_NUMBER >= 0x1010000fL
   EVP_MD_CTX_free(md_ctx);
+#else
+  EVP_MD_CTX_destroy(md_ctx);
+#endif
   OPENSSL_free(result);
 
   *out_length = result_buf_size;
