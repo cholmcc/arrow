@@ -19,18 +19,33 @@
 #
 #  find_package(LLVMAlt)
 
-set(LLVM_HINTS ${LLVM_ROOT} ${LLVM_DIR} /usr/lib /usr/share)
-if(LLVM_BREW_PREFIX)
-  list(APPEND LLVM_HINTS ${LLVM_BREW_PREFIX})
-endif()
-foreach(ARROW_LLVM_VERSION ${ARROW_LLVM_VERSIONS})
+if(LLVM_ROOT
+   OR LLVM_DIR
+   OR LLVM_BREW_PREFIX)
+  set(LLVM_HINTS ${LLVM_ROOT} ${LLVM_DIR})
+  if(LLVM_BREW_PREFIX)
+    list(APPEND LLVM_HINTS ${LLVM_BREW_PREFIX})
+  endif()
   find_package(LLVM
-               ${ARROW_LLVM_VERSION}
                CONFIG
                HINTS
-               ${LLVM_HINTS})
+               ${LLVM_HINTS}
+               NO_DEFAULT_PATH)
   if(LLVM_FOUND)
-    break()
+    if(NOT "${LLVM_VERSION_MAJOR}.${LLVM_VERSION_MINOR}" IN_LIST ARROW_LLVM_VERSIONS
+       AND NOT "${LLVM_VERSION_MAJOR}" IN_LIST ARROW_LLVM_VERSIONS)
+      message(FATAL_ERROR "LLVM version found in ${LLVM_ROOT};${LLVM_DIR};${LLVM_BREW_PREFIX} is not supported")
+    endif()
+  endif()
+endif()
+
+foreach(ARROW_LLVM_VERSION ${ARROW_LLVM_VERSIONS})
+  if(NOT LLVM_FOUND)
+    find_package(LLVM
+                 ${ARROW_LLVM_VERSION}
+                 CONFIG
+                 PATHS
+                 "/usr/lib;/usr/share")
   endif()
 endforeach()
 
