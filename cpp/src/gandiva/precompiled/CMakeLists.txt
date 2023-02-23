@@ -46,7 +46,9 @@ if(MSVC)
   set(PLATFORM_CLANG_OPTIONS -std=c++17 -fms-compatibility
                              -fms-compatibility-version=${FMS_COMPATIBILITY})
 else()
-  set(PLATFORM_CLANG_OPTIONS -std=c++17)
+  # ALICE: Clang needs -stdlib=c++ to find include/c++/*/ headers like
+  # <variant> and <string_view>.
+  set(PLATFORM_CLANG_OPTIONS -std=c++17 -stdlib=libc++)
 endif()
 
 # Create bitcode for each of the source files.
