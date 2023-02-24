@@ -86,7 +86,8 @@ if(LLVM_FOUND)
                NAMES clang-${LLVM_PACKAGE_VERSION}
                      clang-${LLVM_VERSION_MAJOR}.${LLVM_VERSION_MINOR}
                      clang-${LLVM_VERSION_MAJOR} clang
-               HINTS ${LLVM_TOOLS_BINARY_DIR})
+               # ALICE: we install clang into bin-safe.
+               HINTS ${LLVM_TOOLS_BINARY_DIR} ${LLVM_ROOT}/bin-safe)
 
   add_library(LLVM::LLVM_HEADERS INTERFACE IMPORTED)
   set_target_properties(LLVM::LLVM_HEADERS
