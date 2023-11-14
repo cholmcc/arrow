@@ -406,6 +406,15 @@ struct NullHandling {
   };
 };
 
+// BEGIN_ALICE change 
+// MacOSX defines `PREALLOCATE` as a macro in the header `vnode.h`. 
+// Thus, we must undefine that here to have a valid identifier. 
+// A bug report against upstream code should be made. 
+#if defined(__APPLE__) && defined(PREALLOCATE)
+#  undef PREALLOCATE 
+#endif 
+// END_ALICE change 
+
 /// \brief The preference for memory preallocation of fixed-width type outputs
 /// in kernel execution.
 struct MemAllocation {
